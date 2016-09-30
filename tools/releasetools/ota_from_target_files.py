@@ -649,6 +649,18 @@ else if get_stage("%(bcb_dev)s") == "3/3" then
   script.Print("Target: %s" % CalculateFingerprint(
       oem_props, oem_dict, OPTIONS.info_dict))
 
+  script.Print("");
+  script.Print(".oPYo.               8                   ");
+  script.Print("8    8               8                   ");
+  script.Print("8      o    o .oPYo. 8oPYo. .oPYo. oPYo. ");
+  script.Print("8      8    8 8    8 8    8 8oooo8 8  `' ");
+  script.Print("8    8 8    8 8    8 8    8 8.     8     ");
+  script.Print("`YooP' `YooP8 8YooP' 8    8 `Yooo' 8     ");
+  script.Print(":.....::....8 8 ....:..:::..:.....:..::::");
+  script.Print(":::::::::ooP'.8 :::::::::  CypherOS  ::::");
+  script.Print(":::::::::...::..:::::::::::::::::::::::::");
+  script.Print("");
+
   script.AppendExtra("ifelse(is_mounted(\"/system\"), unmount(\"/system\"));")
   device_specific.FullOTA_InstallBegin()
 
