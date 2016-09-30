@@ -1,13 +1,5 @@
 # Put some miscellaneous rules here
 
-# Build system colors
-
-ifneq ($(BUILD_WITH_COLORS),0)
-  CL_SLIM="\033[38;5;24m"
-  CL_SGRY="\033[38;5;239m"
-  CL_RST="\033[0m"
-endif
-
 # HACK: clear LOCAL_PATH from including last build target before calling
 # intermedites-dir-for
 LOCAL_PATH := $(BUILD_SYSTEM)
@@ -240,7 +232,7 @@ endif
 	$(hide) TARGET_BUILD_TYPE="$(TARGET_BUILD_VARIANT)" \
 			TARGET_BUILD_FLAVOR="$(TARGET_BUILD_FLAVOR)" \
 			TARGET_DEVICE="$(TARGET_VENDOR_DEVICE_NAME)" \
-			SLIM_DEVICE="$(TARGET_DEVICE)" \
+			CYPHER_DEVICE="$(TARGET_DEVICE)" \
 			PRODUCT_NAME="$(TARGET_VENDOR_PRODUCT_NAME)" \
 			PRODUCT_BRAND="$(PRODUCT_BRAND)" \
 			PRODUCT_DEFAULT_LOCALE="$(call get-default-product-locale,$(PRODUCT_LOCALES))" \
@@ -1276,10 +1268,8 @@ endef
 $(BUILT_SYSTEMIMAGE): $(FULL_SYSTEMIMAGE_DEPS) $(INSTALLED_FILES_FILE)
 	$(call build-systemimage-target,$@)
 
-ifndef I_WANT_A_QUAIL_STAR
 ifneq ($(WITHOUT_CHECK_API),true)
-$(BUILT_SYSTEMIMAGE): checkapi
-endif
+#$(BUILT_SYSTEMIMAGE): checkapi
 endif
 
 INSTALLED_SYSTEMIMAGE := $(PRODUCT_OUT)/system.img
@@ -2098,7 +2088,7 @@ endif
 ifeq ($(WITH_GMS),true)
     $(INTERNAL_OTA_PACKAGE_TARGET): backuptool := false
 else
-ifneq ($(SLIM_BUILD),)
+ifneq ($(CYPHER_BUILD),)
     $(INTERNAL_OTA_PACKAGE_TARGET): backuptool := true
 else
     $(INTERNAL_OTA_PACKAGE_TARGET): backuptool := false
@@ -2136,26 +2126,14 @@ $(INTERNAL_OTA_PACKAGE_TARGET): $(BUILT_TARGET_FILES_PACKAGE)
 	   $(if $(OEM_OTA_CONFIG), -o $(OEM_OTA_CONFIG)) \
 	   $(BUILT_TARGET_FILES_PACKAGE) $@
 
-SLIM_TARGET_PACKAGE := $(PRODUCT_OUT)/$(SLIM_MOD_VERSION).zip
+CYPHER_TARGET_PACKAGE := $(PRODUCT_OUT)/$(TARGET_PRODUCT)-$(CYPHER_VERSION).zip
 
 .PHONY: otapackage bacon
 otapackage: $(INTERNAL_OTA_PACKAGE_TARGET)
 bacon: otapackage
-	$(hide) ln -f $(INTERNAL_OTA_PACKAGE_TARGET) $(SLIM_TARGET_PACKAGE)
-	$(hide) $(MD5SUM) $(SLIM_TARGET_PACKAGE) > $(SLIM_TARGET_PACKAGE).md5sum
-	@echo -e ${CL_SLIM}" "${CL_SLIM}
-	@echo -e ${CL_SLIM}"                              _______________________________________________  "${CL_SLIM}
-	@echo -e ${CL_SLIM}"                             /                                  slimroms.org | "${CL_SLIM}
-	@echo -e ${CL_SLIM}"                            /   _____________________________________________| "${CL_SLIM}
-	@echo -e ${CL_SLIM}"                           /   /                                               "${CL_SLIM}
-	@echo -e ${CL_SLIM}"                          /   /  _  _      "${CL_SGRY}" ______                             "${CL_SLIM}
-	@echo -e ${CL_SLIM}"                         /   /  | |(_)     "${CL_SGRY}"(_____ \                            "${CL_SLIM}
-	@echo -e ${CL_SLIM}"                        /   /   | | _ _____ "${CL_SGRY}"_____) )___  _____  ___            "${CL_SLIM}
-	@echo -e ${CL_SLIM}"  _____________________/   /    | || |     |"${CL_SGRY}"  __  // _ \|     |/___)           "${CL_SLIM}
-	@echo -e ${CL_SLIM}" |                        /     | || | | | |"${CL_SGRY}" |  \ \ |_| | | | |___ |           "${CL_SLIM}
-	@echo -e ${CL_SLIM}" |_______________________/       \_)_|_|_|_|"${CL_SGRY}"_|   |_\___/|_|_|_(___/            "${CL_SLIM}
-	@echo -e ${CL_SLIM}" "${CL_SLIM}
-	@echo -e ${CL_CYN}"Package Complete: $(SLIM_TARGET_PACKAGE)"${CL_RST}
+	$(hide) ln -f $(INTERNAL_OTA_PACKAGE_TARGET) $(CYPHER_TARGET_PACKAGE)
+	$(hide) $(MD5SUM) $(CYPHER_TARGET_PACKAGE) > $(CYPHER_TARGET_PACKAGE).md5sum
+	@echo "Package Complete: $(CYPHER_TARGET_PACKAGE)"
 
 endif    # build_ota_package
 # -----------------------------------------------------------------

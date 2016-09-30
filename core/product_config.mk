@@ -179,9 +179,10 @@ include $(BUILD_SYSTEM)/node_fns.mk
 include $(BUILD_SYSTEM)/product.mk
 include $(BUILD_SYSTEM)/device.mk
 
-# A SLIM build needs only the SLIM product makefiles.
-ifneq ($(SLIM_BUILD),)
-  all_product_configs := $(shell find device -path "*/$(SLIM_BUILD)/slim.mk")
+# A Cypher build needs only the Cypher product makefiles.
+ifneq ($(CYPHER_BUILD),)
+  $(info Looking vendor/cypher for cypher_$(CYPHER_BUILD).mk)
+  all_product_configs := $(shell find vendor/cypher -path "*/$(CYPHER_BUILD)/cypher_$(CYPHER_BUILD).mk")
 else
   ifneq ($(strip $(TARGET_BUILD_APPS)),)
   # An unbundled app build needs only the core product makefiles.
@@ -192,9 +193,9 @@ else
     # files in the tree.
     all_product_configs := $(get-all-product-makefiles)
   endif # TARGET_BUILD_APPS
-endif # SLIM_BUILD
+endif # CYPHER_BUILD
 
-ifeq ($(SLIM_BUILD),)
+ifeq ($(CYPHER_BUILD),)
 # Find the product config makefile for the current product.
 # all_product_configs consists items like:
 # <product_name>:<path_to_the_product_makefile>

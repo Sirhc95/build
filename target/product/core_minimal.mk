@@ -101,9 +101,7 @@ PRODUCT_BOOT_JARS := \
     apache-xml \
     org.apache.http.legacy.boot
 
-# The order of PRODUCT_SYSTEM_SERVER_JARS matters.
-PRODUCT_SYSTEM_SERVER_JARS := \
-    services.slim \
+PRODUCT_SYSTEM_SERVER_JARS += \
     services \
     ethernet-service \
     wifi-service
